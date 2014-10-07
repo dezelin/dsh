@@ -5,4 +5,14 @@ compiler:
     - gcc
     - clang
 
+branches:
+    only:
+        - master
+        - devel
+
+before_install:
+    - sudo apt-get update -qq
+
+install:
+    - sudo apt-get install libboost-all-dev -qq
 
