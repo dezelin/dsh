@@ -19,7 +19,7 @@
 #ifndef LEX_H
 #define LEX_H
 
-#include <boost/spirit/lex.h>
+#include <boost/spirit/include/lex.hpp>
 
 namespace dsh {
 
@@ -29,7 +29,7 @@ namespace dsh {
         // Lexer token ids as defined in IEEE Std 1003.2
         //
         enum tokens {
-            TOK_WORD,
+            TOK_WORD = boost::spirit::lex::min_token_id + 1,
             TOK_ASSIGNMENT_WORD,
             TOK_NAME,
             TOK_NEWLINE,
@@ -42,7 +42,7 @@ namespace dsh {
             TOK_LESSAND,
             TOK_GREATAND,
             TOK_LESSGREAT,
-            TOK_DLESSDASH
+            TOK_DLESSDASH,
             TOK_CLOBBER,
             TOK_IF,
             TOK_THEN,
@@ -60,6 +60,13 @@ namespace dsh {
             TOK_RBRACE,
             TOK_BANG,
             TOK_IN
+        };
+
+        template <typename lexer>
+        struct dsh_lexer : public boost::spirit::lex::lexer<lexer> {
+
+
+        private:
         };
 
 
