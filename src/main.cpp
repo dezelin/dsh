@@ -37,6 +37,15 @@ void print_token(token_type const & tok) {
     }
 
     string val(tok.value().begin(), tok.value().end());
+
+    switch (tok.id()) {
+        case dsh_lex::TOK_NEWLINE:
+            val = "\\n";
+            break;
+        default:
+            break;
+    }
+
     cout << "ID: " << tok.id() << ", VALUE: " << val << "\n";
 }
 
@@ -46,15 +55,27 @@ int main(int argc, char **argv) {
     dsh_lexer_type lexer;
     string buff(read_from_file(argc == 1 ? "/tmp/test.sh" : argv[1]));
 
+    
     char const *buff_first = buff.c_str();
-    char const *buff_last = &buff_last[buff.size()];
+    char const *buff_last = &buff_first[buff.size()];
+    /*
     lexer_type::iterator_type it = lexer.begin(buff_first, buff_last);
     lexer_type::iterator_type end = lexer.end();
 
-    while(it != end) {
+    while(it != end && token_is_valid(*it)) {
         print_token(*it);
         ++it;
     }
+    */
 
+    
+    bool r = lex::tokenize(buff_first, buff_last, lexer);
+    
+    if (!r) {
+        string rest(buff_first, buff_last);
+        std::cerr << "Lexical analysis failed\n" << "stopped at: \""
+            << rest << "\"\n";
+    }
+    
     return 0;
 }
